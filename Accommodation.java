@@ -4,24 +4,25 @@ import java.util.List;
 public class Accommodation {
 
     public static class Room {
-        private String code;             // Unique code for the room
-        private String name;             // Name of the accommodation
-        private String type;             // Type (Apartment, Hotel, Lodge)
-        private double pricePerDay;      // Price per day
-        private String availability = "yes"; // Room availability initialized as "yes"
-        private static int nextId = 1;   // Auto-increment room number
-        private int roomNo;              // Room number
-
-        // Constructor with code, name, type, and price
+        private String code;             
+        private String name;            
+        private String type;             
+        private double pricePerDay;      
+        private String availability = "yes";
+        private static int nextId = 1;   
+        private int roomNo;              
+// this private method only access in under public static class room 
+// static works for keyword already overlaped nested class no need to make outside class(Accommodation) it can use Room class itself
+        
         public Room(String code, String name, String type, double pricePerDay) {
             this.code = code;
             this.name = name;
             this.type = type;
             this.pricePerDay = pricePerDay;
             this.roomNo = nextId++;
-        }
+        }// Constructor with code, name, type, and price
 
-        // Getters and Setters
+        // get information and return  back 
         public String getCode() {
             return code;
         }
@@ -38,7 +39,7 @@ public class Accommodation {
             return pricePerDay;
         }
 
-        // Check if the room is available ("yes" means available)
+        // Check if the room is available ("yes" means available) returne type is boolean but i want to use yes or no 
         public boolean isAvailable() {
             return availability.equalsIgnoreCase("yes");
         }

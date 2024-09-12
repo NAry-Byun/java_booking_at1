@@ -1,3 +1,4 @@
+//library
 import java.io.*;
 import java.util.*;
 import java.time.*;
@@ -12,30 +13,30 @@ public class MtBullerResort {
     private ArrayList<Accommodation.Room> rooms;
     private ArrayList<Customer> customers;
     private ArrayList<TravelPackage> bookings;
-    private Scanner input; // Single Scanner instance for the entire class
+    private Scanner input; // one command scanner for all input
 
-    // Constructor initializes lists and Scanner
+    // structure of scanner list
     public MtBullerResort() {
         rooms = new ArrayList<>();
         customers = new ArrayList<>();
         bookings = new ArrayList<>();
-        input = new Scanner(System.in); // Initialize Scanner once
+        input = new Scanner(System.in); // when user add text 
     }
 
-    // Populate the rooms and customers lists with predefined data
+    // poplyate list when user lookup information 
     public void populateLists() {
       try {
         Accommodation accommodation = new Accommodation(); // Initializes rooms with predefined data
-        rooms.addAll(accommodation.getRooms()); // Ensure `getRooms()` method is defined in Accommodation class
+        rooms.addAll(accommodation.getRooms()); // get room method shows all rooms
 
-        // Adding initial customers with specified levels
+        // Add dummy customers information before start the program
         customers.add(new Customer("Natasha", "Beginner"));
         customers.add(new Customer("Jeff", "Intermediate"));
         customers.add(new Customer("Sam", "Advanced"));
     } catch (Exception e) {
         System.out.println("Error populating lists: " + e.getMessage());
     }
-    }
+    }// when there are error coming catch shows this print 
 
     // Main method to run the application
     public static void main(String[] args) {
@@ -134,7 +135,7 @@ public class MtBullerResort {
         System.out.print("Customer name? ");
         String name = input.nextLine();
 
-        // Prompt user to select the level
+        // display user to select the level
         String level = null;
         while (level == null) {
             System.out.println("Select level: 1. Beginner, 2. Intermediate, 3. Advanced");
@@ -166,45 +167,47 @@ public class MtBullerResort {
     }
     }
 
-    // List all customers
     public void listCustomers() {
         for (Customer c : customers) {
             System.out.println(c);
         }
     }
 
-    // Create a booking package
     public void createPackage() {
       try {
         System.out.print("Customer ID? ");
         int custId = input.nextInt();
         input.nextLine();
+
         System.out.print("Duration (in days)? ");
         int duration = input.nextInt();
         input.nextLine();
+
         System.out.print("Date in format yyyy-MM-dd? ");
         String dateStr = input.nextLine();
         LocalDate startDate = LocalDate.parse(dateStr);
 
-        // Select accommodation
         System.out.print("Enter room code (e.g., A-1, H-2, L-3): ");
         String roomCode = input.nextLine();
+
         Accommodation.Room room = searchRoomByCode(roomCode);
         if (room == null || !room.isAvailable()) {
             System.out.println("Room not available. Try again.");
             return;
         }
-        double accommodationCost = room.getPricePerDay() * duration;
 
-        // Create a new travel package
+        double accommodationCost = room.getPricePerDay() * duration;
         TravelPackage travelPackage = new TravelPackage(custId, room.getRoomNo(), startDate, duration, null, null, accommodationCost
         );
-        room.setAvailability("no"); // Correctly set availability to "no" when booked
+        room.setAvailability("no"); 
         bookings.add(travelPackage);
         System.out.println("Package created successfully!");
-      } catch (DateTimeParseException e) {
+      } 
+      
+      catch (DateTimeParseException e) {
             System.out.println("Invalid date format. Please use yyyy-MM-dd.");
-        } catch (Exception e) {
+        } 
+      catch (Exception e) {
             System.out.println("Error creating package: " + e.getMessage());
         }
     }
@@ -219,27 +222,23 @@ public class MtBullerResort {
             return;
         }
 
-    Customer customer = customers.stream()
-      .filter(c -> c.getCustId()== booking.getCustId())
-      .findFirst()
-      .orElse(null);
-    if (customer == null){
-      System.out.println("Customer not found.");
-      return;
+       Customer customer = customers.stream()
+       .filter(c -> c.getCustId()== booking.getCustId())
+       .findFirst()
+       .orElse(null);
+         if (customer == null){
+         System.out.println("Customer not found.");
+         return;
     }
-
-
         TravelPackage.LiftPass liftPass = selectLiftPass();
-        
-       
         booking.setLiftPass(liftPass);
         System.out.println("Lift pass added to package.");
-      }catch (Exception e) {
+      }
+      catch (Exception e) {
         System.out.println("Error adding lift pass: " + e.getMessage());
     }
     }
 
-    // Add lesson fees to the package
     public void addLessonFeesToPackage() {
       try {
         System.out.print("Enter Booking ID to add lesson fees: ");
@@ -257,8 +256,6 @@ public class MtBullerResort {
         System.out.println("Error adding lesson fees: " + e.getMessage());
     }
     }
-
-    // Method to select lift pass
     private TravelPackage.LiftPass selectLiftPass() {
       try {
         System.out.println("Select Lift Pass: 1. Full Day ($26), 2. Five Days (10% discount), 3. Season ($200)");
@@ -274,13 +271,12 @@ public class MtBullerResort {
                 System.out.println("Invalid choice, defaulting to Full Day Pass.");
                 return TravelPackage.LiftPass.FULL_DAY_PASS;
         }
-      }catch (Exception e) {
+      }
+      catch (Exception e) {
         System.out.println("Error selecting lift pass: " + e.getMessage());
         return TravelPackage.LiftPass.FULL_DAY_PASS;
     }
     }
-
-    // Method to select lesson type
     private TravelPackage.Lesson selectLesson() {
       try {
         System.out.println("Select Lesson: 1. Beginner ($25), 2. Intermediate ($20), 3. Advanced ($15)");
@@ -296,20 +292,19 @@ public class MtBullerResort {
                 System.out.println("Invalid choice, defaulting to Beginner.");
                 return TravelPackage.Lesson.BEGINNER;
         }
-      } catch (Exception e) {
+      } 
+      catch (Exception e) {
         System.out.println("Error selecting lesson: " + e.getMessage());
         return TravelPackage.Lesson.BEGINNER;
     }
     }
 
-    // List all packages
     public void listPackages() {
         for (TravelPackage p : bookings) {
             System.out.println(p);
         }
     }
 
-    // Save bookings to file
     public void saveBookings() {
         try {
             fos = new FileOutputStream("bookings.dat");
@@ -324,7 +319,6 @@ public class MtBullerResort {
         }
     }
 
-    // Read bookings from file
     public void readBookings() {
         bookings.clear();
         try {
@@ -346,12 +340,11 @@ public class MtBullerResort {
                     break;
                 }
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    // Search for a room by code
     public Accommodation.Room searchRoomByCode(String code) {
         for (Accommodation.Room r : rooms) {
             if (r.getCode().equalsIgnoreCase(code)) {
@@ -361,7 +354,6 @@ public class MtBullerResort {
         return null;
     }
 
-    // Search for a room by number
     public Accommodation.Room searchRoomByNumber(int roomNo) {
         for (Accommodation.Room r : rooms) {
             if (r.getRoomNo() == roomNo) {
@@ -371,7 +363,6 @@ public class MtBullerResort {
         return null;
     }
 
-    // Search for a package by booking ID
     public TravelPackage searchPackageById(int bookingId) {
         for (TravelPackage b : bookings) {
             if (b.getBookingId() == bookingId) {
@@ -390,7 +381,8 @@ public class MtBullerResort {
       fos.close();
       oos.close();
       
-    } catch (Exception e) {
+    } 
+    catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -413,14 +405,16 @@ public class MtBullerResort {
           //add to array list
           bookings.add(b);
           System.out.println(b);
-        } catch (EOFException eof) {
+        } 
+        catch (EOFException eof) {
           fis.close();
           ois.close();
           break;
         }
       }
       
-    } catch (Exception e) {
+    } 
+    catch (Exception e) {
       e.printStackTrace();
     }
   

@@ -4,7 +4,7 @@ public class Customer {
     private String level;
     static int nextID = 1;
 
-    // Constructor with customer ID, name, and level
+    // when customer try to add customer information this questions need to feel out and getting customer id
     public Customer(int custId, String name, String level) {
         this.custId = custId; // Correctly assigning custId
         this.name = name;
@@ -18,11 +18,11 @@ public class Customer {
         setLevel(level);
     }
 
-    // Getter for custId
-    public int getCustId() { // Added missing curly brace
+    //get and return custid
+    public int getCustId() {
         return custId;
     }
-
+//
     public String getName() {
         return name;
     }
@@ -55,3 +55,7 @@ public class Customer {
         return "Customer ID: " + custId + ", Name: " + name + ", Level: " + level;
     }
 }
+
+
+//void - doe not have to returne as just print out, sting - data type 'string a=b' b saved in a 
+//int-basic data type normally works for number index and count  int a = 20 -> 20 in a

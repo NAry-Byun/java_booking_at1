@@ -13,7 +13,7 @@ public class TravelPackage implements Serializable {
     private LiftPass liftPass;
     private Lesson lesson;
     static int nextID = 200;
-
+//double save the 00.00 numbers it usually use for price distance weight 
     public enum LiftPass {
         FULL_DAY_PASS(26),
         FIVE_DAYS_PASS(26 * 5 * 0.9),
@@ -70,8 +70,6 @@ public class TravelPackage implements Serializable {
         if (lesson != null) total += lesson.getFee();        // Add lesson fee
         return total;
     }
-
-    // Getters and setters
     public int getBookingId() {
         return bookingId;
     }
@@ -120,7 +118,7 @@ public class TravelPackage implements Serializable {
         return calculateTotalCost(); // Call the calculateTotalCost method to get the correct total
     }
 
-    // Set lift pass and update total cost
+    // lift pass and update total cost
     public void setLiftPass(LiftPass liftPass) {
         this.liftPass = liftPass;
     }
@@ -130,18 +128,16 @@ public class TravelPackage implements Serializable {
         this.lesson = lesson;
     }
 
-    // Get lift pass
     public LiftPass getLiftPass() {
         return liftPass;
     }
 
-    // Get lesson
     public Lesson getLesson() {
         return lesson;
     }
 
-    // toString method to display booking details
     @Override
+    // annotation get from parants 
     public String toString() {
         return "Booking ID: " + bookingId +
                ", Customer ID: " + custId +
